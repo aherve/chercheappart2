@@ -1,0 +1,15 @@
+api:
+  build: .
+  links:
+    - 'db'
+  volumes:
+    - '.:/app'
+    - '/app/node_modules'
+  ports:
+    - "0.0.0.0:9000:9000"
+
+db:
+  image: mvertes/alpine-mongo:3.2.1
+  ports:
+    - "27017"
+  command: mongod
