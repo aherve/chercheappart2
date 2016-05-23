@@ -8,15 +8,19 @@ export default class AdCrawler {
   constructor () {
   }
 
-  crawl (url, cb) {
+  getPageAds (url, cb) {
     const $ = cheerio.load(this.debugHtml())
     const x = $('.listing').map((i, el) => {
       return Object.assign({}, {
-        id: el.attribs.id,
+        slug: el.attribs.id,
+        url: $('.listing_infos > h2 > a', el).first().attr('href'),
         title: $('.listing_infos > h2 > a', el).first().text(),
-        price: $('.listing_infos > .price', el).first().text(),
+        price: $('.listing_infos > .price > .amount', el).first().text(),
+        description: $('.listing_infos > .description', el).first().text(),
+        surface: $('ul.property_list > li', el).last().text(),
+        pictureUrl: $('img.listing_photo', el).first().attr('src'),
       })
-    }).get()
+    }).get().map(xx => new Ad(xx))
     return cb(null, x)
   }
 

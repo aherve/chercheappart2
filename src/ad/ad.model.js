@@ -6,7 +6,13 @@ import timestamps from 'mongoose-timestamps'
 const Schema = mongoose.Schema
 
 const AdSchema = new Schema({
-  title: {type: String, default: 'tagada'},
+  slug: String,
+  url: String,
+  title: String,
+  price: String,
+  description: String,
+  surface: String,
+  pictureUrl: String,
 })
 
 AdSchema.plugin(timestamps)
