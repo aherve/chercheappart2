@@ -9,4 +9,4 @@ WORKDIR /app
 ADD package.json .
 RUN npm install
 
-CMD nodemon ./src/index.js
+CMD node ./src/index.js
