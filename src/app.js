@@ -13,13 +13,17 @@ const app = express()
 const server = require('http').createServer(app);
 
 app.get('/', function (req, res) {
-  new AdCrawler().getPageAds(
-    'http://www.seloger.com/list.htm?idtt=2&idtypebien=1,2&cp=75&tri=initial&pxmax=500000&nb_piecesmin=3&surfacemin=60&LISTING-LISTpg=1',
-    (err, crawled) => {
-      if (err) { return res.status(500).send(err) }
-      res.status(200).send({res: crawled})
-    }
-  )
+  new AdCrawler({
+    postalCode: 75012,
+    maxPrice: 500000,
+    minRooms: 3,
+    minSurface: 60,
+    page: 1,
+  }).searchAndSave((err, crawled) => {
+    if (err) { return res.status(500).send(err) }
+    console.log('crawled = ', crawled)
+    res.status(200).send({res: crawled})
+  })
 })
 
 server.listen(9000, function () {
