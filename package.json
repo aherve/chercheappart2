@@ -23,6 +23,7 @@
     "express": "^4.13.4",
     "mongoose": "^4.4.19",
     "mongoose-timestamps": "0.0.1",
+    "node-trello": "^1.1.2",
     "random-useragent": "^0.3.0",
     "request": "^2.72.0"
   }
