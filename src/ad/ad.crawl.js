@@ -51,7 +51,7 @@ export default class AdCrawler {
   getMaxPage (cb) {
     console.log('getting max page')
     request.get({
-      headers: {'User-Agent': randomUseragent.getRandom()},
+      headers: this.headers,
       url: `http://www.seloger.com/list.htm?idtt=2&idtypebien=1,2` +
       `&cp=${this.params.postalCode}&tri=initial&pxmax=${this.params.maxPrice}` +
         `&nb_piecesmin=${this.params.minRooms}&surfacemin=${this.params.minSurface}&LISTING-LISTpg=2`},
@@ -79,7 +79,7 @@ export default class AdCrawler {
   getPageAds (page, cb) {
     console.log('browsing page number ', page)
     request.get({
-      headers: {'User-Agent': randomUseragent.getRandom()},
+      headers: this.headers,
       url: `http://www.seloger.com/list.htm?idtt=2&idtypebien=1,2` +
       `&cp=${this.params.postalCode}&tri=initial&pxmax=${this.params.maxPrice}` +
       `&nb_piecesmin=${this.params.minRooms}&surfacemin=${this.params.minSurface}&LISTING-LISTpg=${page}`

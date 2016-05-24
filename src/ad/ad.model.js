@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose'
 import timestamps from 'mongoose-timestamps'
+import trello from './ad.trello'
 
 const Schema = mongoose.Schema
 
@@ -13,10 +14,6 @@ const AdSchema = new Schema({
   description: String,
   surface: String,
   pictureUrl: String,
-})
-
-AdSchema.post('save', function (doc) {
-  console.log('created doc number ', doc.slug)
 })
 
 AdSchema.methods.saveIfNotExists = function (cb) {
@@ -33,5 +30,6 @@ AdSchema.methods.saveIfNotExists = function (cb) {
 }
 
 AdSchema.plugin(timestamps)
+AdSchema.plugin(trello)
 
 module.exports = mongoose.model('Ad', AdSchema)
