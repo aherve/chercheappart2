@@ -5,6 +5,11 @@ import async from 'async'
 import request from 'request'
 import cheerio from 'cheerio'
 import randomUa from 'random-ua'
+import _ from 'lodash'
+
+const RANDOM_TIMEOUT_MULTIPLIER = 40 * 1000 // milliseconds
+const TRELLO_CHUNK_SIZE = 40 // elements
+const TRELLO_TIMEOUT_THROTTLE = 10 * 1000 // milliseconds
 
 export default class AdCrawler {
 
@@ -17,16 +22,26 @@ export default class AdCrawler {
      */
   constructor (params) {
     Object.assign(this, {params}, {
-      randomTimeoutMultiplier: 30, // will browse pages with a delay of [0, 30]s
     })
   }
 
   searchAndSave (cb) {
     this.search((err, newAds) => {
       if (err) { return cb(err) }
-      async.each(newAds, (ad, cb) => {
-        ad.saveIfNotExists(cb)
-      }, cb)
+
+      const chunked = _.chunk(newAds, TRELLO_CHUNK_SIZE)
+      chunked.forEach((chunk, i) => {
+        setTimeout(function () {
+          async.each(chunk, (ad, cb) => {
+            ad.saveIfNotExists(cb)
+          }, (err) => {
+            if (err) { console.log('ERROR', err) }
+            console.log(`saved ${chunk.length} new ads`)
+          })
+        }, i * TRELLO_TIMEOUT_THROTTLE)
+      })
+
+      return cb(null, newAds.length)
     })
   }
 
@@ -75,11 +90,10 @@ export default class AdCrawler {
   }
 
   getPageAds (page , cb) {
-    setTimeout(this.instantGetPageAds.bind(this, page, cb), Math.random() * 1000 * this.randomTimeoutMultiplier)
+    setTimeout(this.instantGetPageAds.bind(this, page, cb), Math.random() * RANDOM_TIMEOUT_MULTIPLIER)
   }
 
   instantGetPageAds (page, cb) {
-    const randomTimeout = this.tim
     console.log('browsing page number ', page)
     request.get({
       headers: this.randomHeader(),

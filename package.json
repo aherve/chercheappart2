@@ -20,6 +20,7 @@
     "async": "^2.0.0-rc.5",
     "babel": "~5.8.23",
     "cheerio": "^0.20.0",
+    "lodash": "^4.13.1",
     "mongoose": "^4.4.19",
     "mongoose-timestamps": "0.0.1",
     "node-trello": "^1.1.2",
