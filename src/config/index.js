@@ -3,7 +3,7 @@
 const config = {
   foo: 'bar',
   db: {
-    uri: 'mongodb://db/chercheappart2',
+    uri: process.env.MONGO_URI,
     options: {
       db: {
         safe: true,

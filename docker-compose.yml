@@ -1,7 +1,7 @@
 crawler:
   build: .
-  links:
-    - 'db'
+  #links:
+  #  - 'db'
   volumes:
     - '.:/app'
     - '/app/node_modules'
@@ -10,8 +10,8 @@ crawler:
   env_file:
     - './local.env'
 
-db:
-  image: mvertes/alpine-mongo:3.2.1
-  ports:
-    - "27017"
-  command: mongod
+  #db:
+  #  image: mvertes/alpine-mongo:3.2.1
+  #  ports:
+  #    - "27017"
+  #  command: mongod
