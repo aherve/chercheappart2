@@ -10,9 +10,9 @@ mongoose.connect(config.db.uri, config.db.options)
 
 new AdCrawler({
   postalCode: 75,
-  maxPrice: 500000,
+  maxPrice: 400000,
   minRooms: 3,
-  minSurface: 60,
+  minSurface: 65,
 }).searchAndSave((err) => {
   if (err) { return console.log(err) }
   console.log('successfully crawled')

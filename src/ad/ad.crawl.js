@@ -18,7 +18,7 @@ export default class AdCrawler {
   constructor (params) {
     Object.assign(this, {params}, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.30 (KHTML, like Gecko) Chrome/51.0.2661.102 Safari/527.36',
+        'User-Agent': randomUseragent.getRandom()
       }
     })
   }

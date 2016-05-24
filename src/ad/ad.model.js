@@ -17,6 +17,10 @@ const AdSchema = new Schema({
 })
 
 AdSchema.methods.saveIfNotExists = function (cb) {
+  const viager = /[v|V]iager/
+  if (this.title.match(viager) || this.description.match(viager)) {
+    return cb(null, null)
+  }
   mongoose.connection.collections.ads.findOne({
     slug: this.slug,
   }, (err, bro) => {
