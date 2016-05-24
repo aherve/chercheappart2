@@ -4,7 +4,7 @@ import Ad from './ad.model'
 import async from 'async'
 import request from 'request'
 import cheerio from 'cheerio'
-import randomUseragent from 'random-useragent'
+import randomUa from 'random-ua'
 
 export default class AdCrawler {
 
@@ -17,9 +17,7 @@ export default class AdCrawler {
      */
   constructor (params) {
     Object.assign(this, {params}, {
-      headers: {
-        'User-Agent': randomUseragent.getRandom()
-      }
+      randomTimeoutMultiplier: 30, // will browse pages with a delay of [0, 30]s
     })
   }
 
@@ -51,9 +49,9 @@ export default class AdCrawler {
   getMaxPage (cb) {
     console.log('getting max page')
     request.get({
-      headers: this.headers,
+      headers: this.randomHeader(),
       url: `http://www.seloger.com/list.htm?idtt=2&idtypebien=1,2` +
-      `&cp=${this.params.postalCode}&tri=initial&pxmax=${this.params.maxPrice}` +
+      `&cp=${this.params.postalCode}&photo=15&tri=initial&pxmax=${this.params.maxPrice}` +
         `&nb_piecesmin=${this.params.minRooms}&surfacemin=${this.params.minSurface}&LISTING-LISTpg=2`},
         (err, res) => {
           console.log('got status', res.statusCode)
@@ -76,12 +74,17 @@ export default class AdCrawler {
                )
   }
 
-  getPageAds (page, cb) {
+  getPageAds (page , cb) {
+    setTimeout(this.instantGetPageAds.bind(this, page, cb), Math.random() * 1000 * this.randomTimeoutMultiplier)
+  }
+
+  instantGetPageAds (page, cb) {
+    const randomTimeout = this.tim
     console.log('browsing page number ', page)
     request.get({
-      headers: this.headers,
+      headers: this.randomHeader(),
       url: `http://www.seloger.com/list.htm?idtt=2&idtypebien=1,2` +
-      `&cp=${this.params.postalCode}&tri=initial&pxmax=${this.params.maxPrice}` +
+      `&cp=${this.params.postalCode}&photo=15&tri=initial&pxmax=${this.params.maxPrice}` +
       `&nb_piecesmin=${this.params.minRooms}&surfacemin=${this.params.minSurface}&LISTING-LISTpg=${page}`
     },
         (err, res) => {
@@ -102,6 +105,12 @@ export default class AdCrawler {
           return cb(null, adsData)
         }
     )
+  }
+
+  randomHeader () {
+    return {
+      'User-Agent': randomUa.generate()
+    }
   }
 
 }

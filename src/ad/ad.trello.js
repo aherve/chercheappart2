@@ -9,10 +9,12 @@ export default function AdTrelloPlugin (schema) {
       name: `${ad.title} - ${ad.surface} - ${ad.price}`,
       desc: `${ad.description} \n ${ad.url}`,
     }, (err, card) => {
+      console.log('adding picture url', ad.pictureUrl)
       trello.post(`/1/cards/${card.id}/attachments`, {
         url: ad.pictureUrl,
       }, (err, res) => {
-        console.log(`finished trello for card ${card.slug}`)
+        if (err) { console.log('ERROR', err) }
+        console.log(`finished trello for card ${ad.slug}`)
       })
     })
   })
